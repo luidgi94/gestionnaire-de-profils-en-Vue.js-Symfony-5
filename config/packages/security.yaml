@@ -1,0 +1,71 @@
+security:
+    encoders:
+        # use your user class name here
+        App\Entity\User:
+            # Use native password encoder
+            # This value auto-selects the best possible hashing algorithm
+            # (i.e. Sodium when available).
+            algorithm: auto   
+        App\Security\Email:
+            algorithm: auto
+
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+         # Va chercher dans ma base de donnée un user correspondant :
+        my_data:
+            entity:
+                class: App\Entity\User
+                property: email
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+        # used to reload user from session & other features (e.g. switch_user)
+            
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: true
+
+            provider: my_data
+
+            form_login:
+                login_path: security_login
+                check_path: security_login
+            
+            logout:
+                path: security_logout
+                target: /
+            # dans scr/security/LoginFormAuthenticator.php on trouve les fonctions pour la connexion
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # matches /admin/users/*
+        # matches /admin/* except for anything matching the above rule
+        
+        # - { path: '^/superadmin', roles: ROLE_SUPER_ADMIN }
+        # - { path: '^/interface_directeur', roles: ROLE_SUPER_ADMIN }
+        
+        # - { path: '^/admin', roles: ROLE_ADMIN }
+        # - { path: '^/interface_enseignant', roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
+        
+        # Les roles admin peuvent aller sur les routes user
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN

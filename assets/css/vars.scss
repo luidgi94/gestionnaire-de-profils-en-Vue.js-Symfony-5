@@ -1,0 +1,53 @@
+// VARIABLES SCSS
+
+$login:#258b58 !default;
+$lyceen:#1a5fb9 !default;
+$directeurs:#3f728a !default;
+$professeur:#025a83 !default;
+$password:#832002 !default;
+$semicolors:#ffffff17 !default;
+
+$colors: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$colors: map-merge(
+  (
+    
+    "login":      $login,
+    "lyceen":     $lyceen,
+    "directeurs": $directeurs,
+    "semicolors": $semicolors,
+    "professeurs": $professeur,
+    "passwords": $password,
+  ),
+  $colors
+);
+
+
+$connect:       $login !default;
+$lycee:         $lyceen !default;
+$directeur:     $directeurs !default;
+$semicolor:     $semicolors !default;
+$professeur:    $professeurs !default;
+$password:      $passwords !default;
+
+
+$theme-colors: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$theme-colors: map-merge(
+  (
+    "connect":    $connect,
+    "lycee":      $lycee,
+    "directeur":  $directeur,
+    "semicolor":  $semicolor,
+    "professeur": $professeur,
+    "password":   $password
+  ),
+  $theme-colors
+);
+
+$alert-bg-level:                     0 !default;
+$alert-border-level:                -9 !default;
+$alert-color-level:                 -11 !default;
+
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import 'node_modules/bootstrap-vue/src/index.scss';

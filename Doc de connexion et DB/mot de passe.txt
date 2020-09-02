@@ -1,0 +1,89 @@
+id : xavier.lycee@codesk.com
+keevesg.lycee@codesk.com
+id: directeur.lycee@codesk.com
+pass : Tester@live.fr9
+-----------------------------------------------------------------------------------------
+package.json
+// "vue-router": "^3.4.0",
+// "underscore": "^1.10.2",
+// "vuex": "^2.5.0"
+
+
+
+
+
+------------------------------------------------------------------------------------------------------
+Source code of the tutorial thecodingmachine.io/building-a-single-page-application-with-symfony-4-and-vuejs.
+
+Quick start
+If you want to try out the project just follow those steps:
+
+$ cp .env.template .env
+$ docker-compose up -d
+$ docker-compose exec app bash # executing bash inside app service
+$ composer install
+$ yarn install
+$ yarn dev
+$ php bin/console doctrine:migration:migrate
+$ php bin/console doctrine:fixtures:load
+On MacOS, also update your /etc/hosts file with:
+
+127.0.0.1   app.localhost
+127.0.0.1   phpmyadmin.app.localhost
+You may now go to http://app.localhost/ and login using the following credentials:
+
+Login: foo Password: bar
+-------------------------------------------------------------------------------------------------
+git commit -m 'projet gestionnaire vue.js-symfony 5'
+
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+/Doc de connexion et DB
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
+
+
+
+--------------------------------------------------------------------------------------------
+
+
+
+Mercure Key JWT:
+thisIsMyStorie!90
+lancer le serveur mercure : 
+./mercure --jwt-key='thisIsMyStorie!90' --addr='localhost:3000' --allow-anonymous --cors-allowed-origins='*'
+New hub path :
+http://localhost:3000/.well-known/mercure
+
+
+voir les vraie erreur sans etre en mode développeur
+http://127.0.0.1:8000/_error/500
+redirection : 
+http://127.0.0.1:8000/_error/404
+
+templates/
+└─ bundles/
+   └─ TwigBundle/
+      └─ Exception/
+         ├─ error404.html.twig
+         ├─ error403.html.twig
+         └─ error.html.twig      # All other HTML errors (including 500)

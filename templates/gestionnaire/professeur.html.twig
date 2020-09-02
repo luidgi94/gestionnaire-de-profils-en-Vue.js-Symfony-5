@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} Gestion des enseignants{% endblock %}</title>
+    {{ encore_entry_link_tags('gestionnaire') }}
+</head>
+<body>
+
+<div id="app">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ path('gestionnaire_professeur') }}"> Gestion des enseignants </a>
+            </div>
+        </div>
+    </nav>
+
+
+    
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <gestionnaire-teacher></gestionnaire-teacher>
+        </div>
+    </div>
+
+{% endblock %}
+
+</div>
+{{ encore_entry_script_tags('gestionnaire') }}
+</body>
+</html>
+
+
+

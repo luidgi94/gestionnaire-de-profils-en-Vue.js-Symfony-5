@@ -1,0 +1,407 @@
+$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap';
+@import '~formvuelar/dist/formvuelar.css'; // pour formulear
+
+.list-enter-active, .list-leave-active {
+  transition: opacity .5s;
+}
+.list-enter, .list-leave-to {
+  opacity: 0;
+}
+ body{
+  background: rgb(137,176,188);
+  background: linear-gradient(95deg, rgba(137,176,188,1) 0%, rgba(70,107,168,1) 100%);
+  width: 80%;
+ }
+
+ #Infotitre{
+
+  color: #fff !important;
+ }
+
+ #InfoErreur{
+  
+  color: #fff !important;
+ }
+ 
+////////////////////////// BARRE RECHERCHE //////////////
+#rechercheDiv{
+  display: table;
+  width: 100%;
+}
+#basic-text1{
+  display: table-cell;
+  width: 5%;
+}
+#tableSearch{
+  display: table-cell;
+  width: 100%;
+}
+
+
+ /////////////////  CHAMPS DATE DE NAISSANCE
+
+ .fvl-input-wrapper-teacherdate { // grosse div de tout
+  // padding: 15px;
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 10px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  margin-right: -10px;
+}
+.fvl-input-label-teacherdate { // label
+  display: table-cell;
+  text-align: left;
+  margin-left: -15px;
+  width: 65px;
+}
+
+.modal-body #deletebtn {
+  margin-left: 50px;
+}
+
+.modal-body #aleatoire {
+  margin-left: -20px;
+}
+
+.modal-body #aleatoire2 {
+  margin-left: -20px;
+}
+
+.fvl-input-teacherdate { // Champs naissance
+  display: table-cell;
+  width: 100%;
+  height: 34px;
+  min-height: 24px;
+  display: block;
+  padding: 8px 40px 0 8px;
+  border-radius: 5px;
+  border: 1px solid #c5bdbd;
+  background: #fff;
+  font-size: 14px;
+
+}
+ /////////  BOUTON AJOUTER PROFF
+ .btn-default {
+
+  color: white;
+  background-color: #22ae45;
+  border-color: #09ae32;
+
+}
+
+.btn-default:hover {
+
+    color: #fff;
+    background-color: #d72323;
+    border-color: #a40505;
+
+}
+
+.btn-default.focus, .btn-default:focus,.btn.active:focus {
+
+  color: #fff;
+  background-color: #d72323;
+  border-color: #a40505;
+
+}
+//////////////
+
+
+.form-control-select {
+
+  width: 35%;
+  height: 34px;
+  padding: 6px 12px;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  -webkit-transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+
+}
+
+//header du formulaire
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid rgb(110, 186, 236);
+  background: rgb(137,176,188);
+  background: linear-gradient(95deg, rgba(137,176,188,1) 0%, rgba(70,107,168,1) 100%);
+}
+//le titre
+.modal-title {
+  color: white;
+  margin: 0;
+  line-height: 1.42857;
+
+}
+.error-message2 {
+  font-style: italic;
+  color: rgba(199,13,13,.507)!important;
+  margin-left: 90px;
+}
+//erreur formulaire 
+.error-message{
+  font-style: italic;
+  color:rgba(199, 13, 13, 0.507) !important;
+}
+
+///////////DEBUT PARAMETRE LOADER //////////////////////////
+
+.loader-overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+  cursor: pointer;
+  span.text {
+      display: inline-block;
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      color: #fff;
+  }
+  .loader {
+      animation: loader-animate 1.5s linear infinite;
+      clip: rect(0, 80px, 80px, 40px);
+      height: 80px;
+      width: 80px;
+      position: absolute;
+      left: calc(50% - 40px);
+      top: calc(50% - 40px);
+      &:after {
+          animation: loader-animate-after 1.5s ease-in-out infinite;
+          clip: rect(0, 80px, 80px, 40px);
+          content: '';
+          border-radius: 50%;
+          height: 80px;
+          width: 80px;
+          position: absolute;
+      }
+  }
+  @keyframes loader-animate {
+      0% {
+          transform: rotate(0deg)
+      }
+      100% {
+          transform: rotate(220deg)
+      }
+  }
+  @keyframes loader-animate-after {
+      0% {
+          box-shadow: inset #fff 0 0 0 17px;
+          transform: rotate(-140deg);
+      }
+      50% {
+          box-shadow: inset #fff 0 0 0 2px;
+      }
+      100% {
+          box-shadow: inset #fff 0 0 0 17px;
+          transform: rotate(140deg);
+      }
+  }
+}
+
+///////////FIN PARAMETRE LOADER //////////////////////////
+
+////////////////////////TABLEAU 
+// bordure droite et gauche 
+.panel-default {
+  border-color: #000;
+}
+
+@media (min-width: 992px){
+
+  .col-md-11 {
+      width: 90%;
+  }
+  .col-md-offset-1 {
+    margin-left: 15%;
+  }
+
+}
+
+
+
+
+.panel {
+  // width: 80%;
+  margin-bottom: 20px;
+  background-color: transparent;
+  border: 1px solid transparent;
+      border-top-color: transparent;
+      border-right-color: transparent;
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  box-shadow: 0 1px 1px rgba(98, 70, 70, 0.05);
+}
+
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+  padding: 8px;
+  line-height: 1.42857;
+  vertical-align: top;
+  border-top: 1px solid #ddd;
+  background-color: white;
+  text-align: center;
+}
+
+
+///////// BARRE DE RECHERCHE : 
+.svg-inline--fa.fa-w-16 {
+  width: 3em;
+  height: 4em;
+  margin-bottom: -20px;
+}
+.purple.lighten-3 {
+  // font-size: 14px!important;
+  // background-color: #ce93d8 !important;
+  color: #ffce3c !important;
+  // border-top-right-radius: 0;
+  // border-bottom-right-radius: 0;
+}
+
+
+/////////// AGRANDIR LA TODOLIST ///////////////////////@extend
+
+// @media (min-width: 992px)
+// .col-md-offset-1 {
+//     margin-left: 5%;
+// }
+// @media (min-width: 992px)
+// .col-md-11 {
+//     width: 100%;
+//     width: 1500px;
+// }
+//////////////////////////////////
+
+.modal-body {
+
+  // text-align: center;
+  padding-left: 12%;
+  .btn {
+ 
+    margin-left: -50px;
+  }
+ 
+  // gere le label du plugin multiselect vue form
+  // mettre un id selon le multiselect : et changer le margin left !!
+  .multiselectLabel {
+    text-align: left;
+    margin-left: -15px;
+
+    // box-sizing: border-box;
+    // -webkit-box-sizing: border-box;
+   
+  }
+  #form-multiselect {
+    display: table;
+    width: 100%; /*Optional*/
+    table-layout: fixed; /*Optional*/
+    border-spacing: 10px; /*Optional*/
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    margin-right: -10px;
+  }
+
+  .tableForm{
+    display: table;
+    padding: 15px;
+    width: 100%; /*Optional*/
+    border-spacing: 15px 0px; /*Optional*/
+   
+  }
+  #genre{
+    border-spacing: 0px ;
+  }
+  .Column {
+    display: table-cell;
+  }
+  // gere le input du plugin multiselect vue form
+  .multiselect__tags {
+    height: 34px;
+    min-height: 24px;
+    display: block;
+    padding: 8px 40px 0 8px;
+    border-radius: 5px;
+    border: 1px solid #c5bdbd;
+    background: #fff;
+    font-size: 14px;
+    
+  }
+  .multiselect {
+   
+    width: 86%; // taille input multiselect
+    margin-left: 10px;
+   
+  }
+  .multiselect__placeholder {
+    color: rgb(163, 160, 160);
+    display: inline-block;
+    margin-bottom: 10px;
+    padding-top: 0px;
+  }
+
+  // Code lorsquon choisi des session
+  .multiselect__input, .multiselect__single {
+    min-height: 15px;
+    line-height: 15px;
+    font-size: 14px;
+  }
+
+}
+
+// bouton ajouter professeur
+.pull-right {
+  float: right!important;
+  margin-top: 25px !important;
+}
+
+.modal-body > p {
+  padding-left: 12%;
+}
+
+.form-inline .form-control {
+  display: inline-block;
+  width: 95%;
+  vertical-align: middle;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.input-group-text {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: .375rem .75rem;
+  margin-bottom: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  text-align: center;
+  white-space: nowrap;
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+      border-top-right-radius: 0.25rem;
+      border-bottom-right-radius: 0.25rem;
+}
+*, ::before, ::after {
+  box-sizing: border-box;
+}
+
+
