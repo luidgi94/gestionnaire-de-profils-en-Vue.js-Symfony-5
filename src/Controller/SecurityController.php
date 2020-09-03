@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 class SecurityController extends AbstractController
 {
-    // /**
+    // /** ok
     //  * @Route("/inscription", name="security_registration")
     //  */
     // public function registration(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)

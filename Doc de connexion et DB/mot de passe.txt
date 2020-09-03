@@ -34,7 +34,7 @@ You may now go to http://app.localhost/ and login using the following credential
 
 Login: foo Password: bar
 -------------------------------------------------------------------------------------------------
-git commit -m 'projet gestionnaire vue.js-symfony 5'
+git commit -m 'First commit projet gestionnaire vue.js-symfony 5'
 
 
 ###> symfony/framework-bundle ###
@@ -87,3 +87,20 @@ templates/
          ├─ error404.html.twig
          ├─ error403.html.twig
          └─ error.html.twig      # All other HTML errors (including 500)
+
+
+-----------------------------------
+configure email in file .env
+# For Gmail as a transport, use: "gmail://username:password@localhost"
+don't forget to configure your gmail account to use swift mailer
+
+composer install
+composer update
+
+npm install
+
+npm run build
+
+
+if problem with doctrine use 
+composer recipes:install --force -v
