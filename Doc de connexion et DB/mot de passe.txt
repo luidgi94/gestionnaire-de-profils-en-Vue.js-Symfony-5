@@ -104,3 +104,13 @@ npm run build
 
 if problem with doctrine use 
 composer recipes:install --force -v
+
+
+--------------------------------------------------
+git status  // branch + liste des fichiers modifiés
+git add -u   // ajouter tous les fichiers modifiés
+git allowed
+
+git log // voir les commit effectuée
+git commit -m 'mise à jour generale' // mettre a jour dans le repertoire locale
+git push -u origin master // envoyer au repository 

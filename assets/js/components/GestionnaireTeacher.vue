@@ -504,7 +504,6 @@ require('../../css/todolist.scss');
                 } else {
                     return false
                 }
-
             },
 
             PasswordConfirmIsValid() {
@@ -718,6 +717,9 @@ require('../../css/todolist.scss');
                 this.updateLoader(true)
                 this.firstSubmit = true
                 if(this.formIsValid || this.firstSubmit && this.formIsValid ){
+                    
+                    let email = this.newProfesseur.email
+                    let firstName = this.newProfesseur.firstName
 
                     this.errorFormDataBase = false
                     const user = {
@@ -756,13 +758,45 @@ require('../../css/todolist.scss');
                         this.updateLoader(false) // Vuex
                         console.log('Il y a eu un problème avec l\'opération fetch: ' + err.message)
                     })
-                    .finally(() => this.updateLoader(false));
+                    .finally(() => {
+                        this.updateLoader(false)
+                        this.sendEmailConfirm(email, firstName)
+                    });
                 }
                 else{
                     this.updateLoader(false)
                     this.$refs.popupNotification.errorNotification("Certains champs mal remplis !", "Vous devez correctement renseigner les champs avant de pouvoir envoyer le formulaire.");
                 }
                 
+            },
+
+            sendEmailConfirm(email, firstName){
+                const user = {
+                        email: email,
+                        firstName: firstName,
+                    };
+                const options = {
+                        method: 'POST',
+                        body: JSON.stringify(user),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                fetch('/sendEmailConfirm/', options)      
+                .then(data => {
+                    // function (response) {
+                    console.log('response de requette :'+ data.ok)
+                    if(data.ok) {
+                    //On supprime le mot de passe du tableau
+                        console.log('message de confirmation envoyé');
+                    } 
+                }) 
+                .catch(function(error) {
+                console.log('Il y a eu un problème avec l\'opération fetch: ' + error.message);
+                })
+                .finally(() => {
+                        console.log('message envoyé')
+                    });
             },
 
             searchInList(){        
@@ -841,7 +875,7 @@ require('../../css/todolist.scss');
                 this.firstSubmit=false
                 this.newProfesseur.email=''
                 this.teacherEdited = {}
-                 this.sessionSelectedValue = []
+                this.sessionSelectedValue = []
                 this.formationSelectedValue = []
             },
 

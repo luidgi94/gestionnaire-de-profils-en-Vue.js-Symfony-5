@@ -163,6 +163,87 @@ class GestionProfesseurController extends AbstractController
     /**
      * Ajout d'un nouveau professeur à la liste
      *
+     * @return Response_for_email_sent
+     * @Route("/sendEmailConfirm/", name="email_confirm")
+     */
+    public function envoiEmailConfirmation(Request $request, \Swift_Mailer $mailer)
+    {
+        $content = json_decode($request->getContent(), true);
+        if ($content['firstName']  && isset($content['email'] )){
+
+            $name = $content['firstName'];
+            // CREATION IMAGE PDF64
+            $path = 'https://packref.seopowa.com/img/logo.jpg';
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
+            // Display the output 
+            // echo $data; 
+
+            // Configure Dompdf according to your needs
+            $pdfOptions = new Options();
+            $pdfOptions->set('defaultFont', 'Arial');
+            
+            // Instantiate Dompdf with our options
+            $dompdf = new Dompdf($pdfOptions);
+            
+            // Retrieve the HTML generated in our twig file
+            $html = $this->renderView('emails/pdf.html.twig',['name' => $name, 'imageconvertie'  =>$base64]);
+            
+            // Load HTML to Dompdf
+            $dompdf->loadHtml($html);
+            
+            // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+            $dompdf->setPaper('A4', 'portrait');
+
+            // Render the HTML as PDF
+            $dompdf->render();
+
+            // Store PDF Binary Data
+            $output = $dompdf->output();
+
+            // EMAIL DE CONFIRMATION :::
+        
+            $message = (new \Swift_Message('Hello Email'))
+            ->setSubject('My subject')
+            ->setFrom('figurinaka@gmail.com')
+            ->setTo('luidgi-clairboy@live.fr')
+            ->setBody(
+                $this->renderView(
+                    // templates/emails/registration.html.twig
+                    'emails/registration.html.twig',
+                    ['name' => $name,'imageconvertie' => $base64]
+                ),
+                'text/html'
+            );
+    
+            // Create the attachment with your data
+            $attachment = new \Swift_Attachment($output, 'my-file.pdf', 'application/pdf');
+            // Attach it to the message
+            $message->attach($attachment);
+
+            $mailer->send($message);
+
+            $response = new Response(
+                'ok',
+                Response::HTTP_OK,
+                ['content-type' => 'application/json']
+            );
+            return $response;
+        }
+
+        return new Response('Error', Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+        
+
+
+
+
+
+    /**
+     * Ajout d'un nouveau professeur à la liste
+     *
      * @return Response
      * @Route("/superadmin/data/enseignants/new", name="password_new")
      */
@@ -237,63 +318,6 @@ class GestionProfesseurController extends AbstractController
             $entityManager->persist($newUser); 
             $entityManager->persist($newProfesseur);
             $entityManager->flush();
-            $name = $content['firstName'];
-
-            // CREATION D'UN PDF ::::
-
-             // CREATION IMAGE PDF64
-            $path = 'https://packref.seopowa.com/img/logo.jpg';
-            $type = pathinfo($path, PATHINFO_EXTENSION);
-            $data = file_get_contents($path);
-            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-    
-      
-            // Display the output 
-            echo $data; 
-
-            // Configure Dompdf according to your needs
-            $pdfOptions = new Options();
-            $pdfOptions->set('defaultFont', 'Arial');
-            
-            // Instantiate Dompdf with our options
-            $dompdf = new Dompdf($pdfOptions);
-            
-            // Retrieve the HTML generated in our twig file
-            $html = $this->renderView('emails/pdf.html.twig',['name' => $name, 'imageconvertie'  =>$base64]);
-            
-            // Load HTML to Dompdf
-            $dompdf->loadHtml($html);
-            
-            // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
-            $dompdf->setPaper('A4', 'portrait');
-
-            // Render the HTML as PDF
-            $dompdf->render();
-
-            // Store PDF Binary Data
-            $output = $dompdf->output();
-
-            // EMAIL DE CONFIRMATION :::
-           
-            $message = (new \Swift_Message('Hello Email'))
-            ->setSubject('My subject')
-            ->setFrom('figurinaka@gmail.com')
-            ->setTo('luidgi-clairboy@live.fr')
-            ->setBody(
-                $this->renderView(
-                    // templates/emails/registration.html.twig
-                    'emails/registration.html.twig',
-                    ['name' => $name,'imageconvertie' => $base64]
-                ),
-                'text/html'
-            );
-       
-            // Create the attachment with your data
-            $attachment = new \Swift_Attachment($output, 'my-file.pdf', 'application/pdf');
-            // Attach it to the message
-            $message->attach($attachment);
-
-            $mailer->send($message);
 
             // Serialize object into Json format
             $jsonContent = $this->serializeGenerator->serializeUserProfesseur($newUser);
