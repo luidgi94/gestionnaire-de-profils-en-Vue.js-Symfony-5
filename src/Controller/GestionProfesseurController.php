@@ -50,7 +50,6 @@ class GestionProfesseurController extends AbstractController
         return $this->render('gestionnaire/professeur.html.twig');
     }
 
-
      /**
      * Retourne la liste de toutes les Formations
      *
@@ -118,10 +117,8 @@ class GestionProfesseurController extends AbstractController
      */
     public function index()
     {
-
         $All_users = array(); // Ca sera le tableau d'objet encodé en json contenant toute les infos de la requete
         // On veut afficher tous les professeur dans la liste du gestionnaire donc on utilise findAll()
-
         $professeurs = $this->entityManager->getRepository(Professeur::class)->findAll();
         foreach ($professeurs as $value) {
             $prof_user = $value->getUser();
@@ -131,39 +128,36 @@ class GestionProfesseurController extends AbstractController
         ///// RECUPERATION DES DONNEES sous forme de tableau d'objets
         $jsonUser = $this->serializeGenerator->serializeUserProfesseur($All_users);
         return new Response($jsonUser, Response::HTTP_OK);
-
     }
     
 
     public function mailer($name, \Swift_Mailer $mailer)
-{
-    $message = (new \Swift_Message('Hello Email'))
-        ->setFrom('send@example.com')
-        ->setTo('recipient@example.com')
-        ->setBody(
-            $this->renderView(
-                // templates/emails/registration.html.twig
-                'emails/registration.html.twig',
-                ['name' => $name]
-            ),
-            'text/html'
-        )
+    {
+        $message = (new \Swift_Message('Hello Email'))
+            ->setFrom('send@example.com')
+            ->setTo('recipient@example.com')
+            ->setBody(
+                $this->renderView(
+                    // templates/emails/registration.html.twig
+                    'emails/registration.html.twig',
+                    ['name' => $name]
+                ),
+                'text/html'
+            )
 
-        // you can remove the following code if you don't define a text version for your emails
-        ->addPart(
-            $this->renderView(
-                // templates/emails/registration.txt.twig
-                'emails/registration.txt.twig',
-                ['name' => $name]
-            ),
-            'text/plain'
-        )
-    ;
-
-    $mailer->send($message);
-
+            // you can remove the following code if you don't define a text version for your emails
+            ->addPart(
+                $this->renderView(
+                    // templates/emails/registration.txt.twig
+                    'emails/registration.txt.twig',
+                    ['name' => $name]
+                ),
+                'text/plain'
+            )
+        ;
+        $mailer->send($message);
     // return $this->render(...);
-}
+    }
 
 
     /**
@@ -252,13 +246,10 @@ class GestionProfesseurController extends AbstractController
             $type = pathinfo($path, PATHINFO_EXTENSION);
             $data = file_get_contents($path);
             $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-            // $img = file_get_contents('https://media.geeksforgeeks.org/wp-content/uploads/geeksforgeeks-22.png'); 
-                
-            // // Encode the image string data into base64 
-            // $data = base64_encode($img); 
+    
       
-    // Display the output 
-    echo $data; 
+            // Display the output 
+            echo $data; 
 
             // Configure Dompdf according to your needs
             $pdfOptions = new Options();
@@ -268,7 +259,7 @@ class GestionProfesseurController extends AbstractController
             $dompdf = new Dompdf($pdfOptions);
             
             // Retrieve the HTML generated in our twig file
-            $html = $this->renderView('emails/registration.html.twig',['name' => $name, 'imageconvertie'  =>$base64]);
+            $html = $this->renderView('emails/pdf.html.twig',['name' => $name, 'imageconvertie'  =>$base64]);
             
             // Load HTML to Dompdf
             $dompdf->loadHtml($html);
@@ -281,12 +272,6 @@ class GestionProfesseurController extends AbstractController
 
             // Store PDF Binary Data
             $output = $dompdf->output();
-
-            // // Output the generated PDF to Browser (inline view)
-            //  $dompdf->stream("mypdf.pdf", [
-            //     "Attachment" => false
-            // ]);
-
 
             // EMAIL DE CONFIRMATION :::
            
@@ -301,36 +286,13 @@ class GestionProfesseurController extends AbstractController
                     ['name' => $name,'imageconvertie' => $base64]
                 ),
                 'text/html'
-            )
-            // Optionally add any attachments
-
-            // you can remove the following code if you don't define a text version for your emails
-            // ->addPart(
-            //     $this->renderView(
-            //         // templates/emails/registration.txt.twig
-            //         'emails/registration.txt.twig',
-            //         ['name' => $name]
-            //     ),
-            //     'text/plain'
-            // )
-            ;
-            // // * Note that you can technically leave the content-type parameter out
-            // $attachment = Swift_Attachment::fromPath('/path/to/image.jpg', 'image/jpeg');
-            
-
-            // // Create your file contents in the normal way, but don't write them to disk
-            // $data = create_my_pdf_data();
-
-            
-
+            );
+       
             // Create the attachment with your data
             $attachment = new \Swift_Attachment($output, 'my-file.pdf', 'application/pdf');
             // Attach it to the message
             $message->attach($attachment);
 
-           
-
-            
             $mailer->send($message);
 
             // Serialize object into Json format
@@ -438,24 +400,12 @@ class GestionProfesseurController extends AbstractController
         $this->entityManager->remove($professeur);
         $this->entityManager->remove($parameter); // on suprime l'objet account_parameter de la table 
         $this->entityManager->flush();
-
-        // $response = new Response();
-        // $response->setContent(json_encode([
-        //     'data' => 'ok',
-        // ]));
-        // $response->headers->set('Content-Type', 'application/json');
-        // return $response;
         $response = new Response(
             'ok',
             Response::HTTP_OK,
             ['content-type' => 'application/json']
         );
         return $response;
-        // return new Response( $this->serializeGenerator->serializeObject('ok'), Response::HTTP_OK);
-        // return new Response('ok', Response::HTTP_OK);
-
-        // $jsonContent = $this->serializeGenerator->serializeUserProfesseur($editUser);
-        // return new Response($jsonContent, Response::HTTP_OK);
     }
 
     
@@ -501,7 +451,6 @@ class GestionProfesseurController extends AbstractController
             $place_aleatoire = random_int(0, ($longeur_chaine - 1));
             $mot_de_passe .= $number[$place_aleatoire];
         }
-
 
         $jsonContent = $this->serializeGenerator->serializeObject($mot_de_passe);
         return new Response($jsonContent, Response::HTTP_OK);
