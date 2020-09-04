@@ -85,7 +85,7 @@
                                 </span>
                             </td>  
                             <td class="col-md-2">{{ prof.email }}</td>
-                            <td class="text-center col-md-1"><span class="label" v-bind:class="[isExpired(prof.createdAt) ? 'label-danger' : 'label-success']">{{ calculInterval(prof.createdAt) }} jours</span></td>
+                            <td class="text-center col-md-1"><span class="label" v-bind:class="[isExpired(prof.createdAt) ? 'label-danger' : 'label-success']">{{ calculInterval(prof.createdAt) }}</span></td>
                             <td class="text-center col-md-1">
                                 <button type="button" class="btn btn-info" @click="miseAjourFormulaire();editTeacher({id: prof.id, firstName: prof.parameter.firstName, lastName: prof.parameter.lastName, genre:prof.parameter.genre, datebirth: formateDate(prof.parameter.datebirth), email: prof.email, session: prof.professeur.session, formation: prof.professeur.formation, username:prof.username, note:prof.note});" data-toggle="modal" data-target="#passwordEdit"><span class="glyphicon glyphicon-pencil"></span></button>
                             </td>
@@ -138,7 +138,7 @@
                
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" @click="raznewProfesseur" >×</button>
+                            <button type="button" class="close" data-dismiss="modal" @click="razNewProfesseur" >×</button>
                             <h4 class="modal-title">Ajout d'un nouveau professeur :</h4>
                         </div>
                         
@@ -717,7 +717,7 @@ require('../../css/todolist.scss');
                 this.updateLoader(true)
                 this.firstSubmit = true
                 if(this.formIsValid || this.firstSubmit && this.formIsValid ){
-                    
+
                     let email = this.newProfesseur.email
                     let firstName = this.newProfesseur.firstName
 
@@ -752,7 +752,7 @@ require('../../css/todolist.scss');
                         let titre = 'Validation de l\'ajout du Profil'
                         let message=' le profil enseignant de '+this.newProfesseur.firstName+' '+this.newProfesseur.lastName+ ' a bien été enregistré ! '
                         this.$refs.popupNotification.validNotification(titre,message);
-                        this.raznewProfesseur()
+                        this.razNewProfesseur()
                     }).catch(err => {
                         this.errorFormDataBase = true 
                         this.updateLoader(false) // Vuex
@@ -795,6 +795,9 @@ require('../../css/todolist.scss');
                 console.log('Il y a eu un problème avec l\'opération fetch: ' + error.message);
                 })
                 .finally(() => {
+                        let titre = 'Validation de l\'envoi du mail de confirmation'
+                        let message=' l\'email de confirmation de création du profil enseignant de '+ firstName + ' a bien été envoyé ! '
+                        this.$refs.popupNotification.validNotification(titre,message);// Lance une methode du meme nom sur un composant enfant !
                         console.log('message envoyé')
                     });
             },
@@ -838,7 +841,36 @@ require('../../css/todolist.scss');
                 if (!value) return '';
                 let todaysDate = moment(new Date());
                 let oDate = moment(new Date(value.timestamp * 1000));
-                return todaysDate.diff(oDate, 'days');
+                if(todaysDate.diff(oDate, 'years') > 0){
+                    return 'Il y a '+(todaysDate.diff(oDate, 'years') + ' ans.');
+                }
+                else if (todaysDate.diff(oDate, 'months') > 0){
+                    return 'Il y a '+(todaysDate.diff(oDate, 'months') + ' mois.');
+                }
+                else if (todaysDate.diff(oDate, 'days') > 0){
+                    return 'Il y a ' +(todaysDate.diff(oDate, 'days') + ' jours.');
+                }
+                else if (todaysDate.diff(oDate, 'hours') > 0){
+                    return 'Il y a ' +(todaysDate.diff(oDate, 'hours') + ' heure.');
+                }
+
+                 else if (todaysDate.diff(oDate, 'minutes') > 0){
+                    return 'Il y a ' +(todaysDate.diff(oDate, 'minutes') + ' minutes.');
+                }
+                else{
+                    return 'Il y a ' +(todaysDate.diff(oDate, 'seconds') + ' secondes.');
+                }
+                
+                
+
+
+
+                // var now  = "01/08/2016 15:00:00";
+                // var then = "04/02/2016 14:20:30";
+                // var diff = moment.duration(todaysDate.diff(oDate));
+                // return diff;
+                
+                
 
             },
             isExpired(value) {
@@ -882,7 +914,7 @@ require('../../css/todolist.scss');
             /**
              * Remise à 0 du formulaire d'edition
              */
-            raznewProfesseur(){
+            razNewProfesseur(){
                 this.firstSubmit=false
                 this.newProfesseur.email=''
                 this.newProfesseur = {} // newProfesseur se vide lors de la fermeture de la modal ou de l'envoi du formulaire 

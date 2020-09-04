@@ -161,7 +161,7 @@ class GestionProfesseurController extends AbstractController
 
 
     /**
-     * Ajout d'un nouveau professeur à la liste
+     * Envoi du mail de confirmation
      *
      * @return Response_for_email_sent
      * @Route("/sendEmailConfirm/", name="email_confirm")
@@ -178,28 +178,19 @@ class GestionProfesseurController extends AbstractController
             $data = file_get_contents($path);
             $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
 
-            // Display the output 
-            // echo $data; 
-
             // Configure Dompdf according to your needs
             $pdfOptions = new Options();
             $pdfOptions->set('defaultFont', 'Arial');
-            
             // Instantiate Dompdf with our options
             $dompdf = new Dompdf($pdfOptions);
-            
             // Retrieve the HTML generated in our twig file
             $html = $this->renderView('emails/pdf.html.twig',['name' => $name, 'imageconvertie'  =>$base64]);
-            
             // Load HTML to Dompdf
             $dompdf->loadHtml($html);
-            
             // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
             $dompdf->setPaper('A4', 'portrait');
-
             // Render the HTML as PDF
             $dompdf->render();
-
             // Store PDF Binary Data
             $output = $dompdf->output();
 
@@ -208,7 +199,7 @@ class GestionProfesseurController extends AbstractController
             $message = (new \Swift_Message('Hello Email'))
             ->setSubject('My subject')
             ->setFrom('figurinaka@gmail.com')
-            ->setTo('luidgi-clairboy@live.fr')
+            ->setTo($content['email'])
             ->setBody(
                 $this->renderView(
                     // templates/emails/registration.html.twig
@@ -219,7 +210,7 @@ class GestionProfesseurController extends AbstractController
             );
     
             // Create the attachment with your data
-            $attachment = new \Swift_Attachment($output, 'my-file.pdf', 'application/pdf');
+            $attachment = new \Swift_Attachment($output, 'mon-fichier-joint.pdf', 'application/pdf');
             // Attach it to the message
             $message->attach($attachment);
 
@@ -258,7 +249,7 @@ class GestionProfesseurController extends AbstractController
            
             $newUser = new User();
             $post_date = new DateTime(); // On ajoute la date d'inscription du professeur
-            $post_date->setTimezone(new \DateTimeZone('Europe/Paris')); 
+            // $post_date->setTimezone(new \DateTimeZone('Europe/Paris')); 
             $newUser->setCreatedAt($post_date);
             $newUser->setUsername($content['username']);
             $newUser->setPassword($content['password']);
@@ -412,7 +403,6 @@ class GestionProfesseurController extends AbstractController
      */
     public function deleteTeacher( $id)
     {
-       
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['id' => $id]);
         $parameter = $this->entityManager->getRepository(AccountParameters::class)->findOneBy(['id' => $user->getParameter()->getId()]);
         $professeur = $this->entityManager->getRepository(Professeur::class)->findOneBy(['id' => $user->getProfesseur()->getId()]);
