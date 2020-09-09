@@ -1,13 +1,10 @@
 <?php
-
 /*
  * 
  */
 
 declare(strict_types=1);
-
 namespace App\Controller;
-
 
 use DateTime;
 use App\Entity\User;
@@ -25,9 +22,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Service\SerializeService;
 
-// PDF Creation 
-use Dompdf\Dompdf;
-use Dompdf\Options;
 
 class GestionProfesseurController extends AbstractController
 {
@@ -43,202 +37,12 @@ class GestionProfesseurController extends AbstractController
     }
     
     /**
-     * @Route("/", name="gestionnaire_professeur")
-     */
-    public function getList()
-    {
-        return $this->render('gestionnaire/professeur.html.twig');
-    }
-
-     /**
-     * Retourne la liste de toutes les Formations
-     *
-     * @Route("/getformations", name="all_Formations")
-     */
-    public function getAllFormations()
-    {
-        
-        $FormationListe = $this->entityManager->getRepository(Formation::class)->findAll();
-        $sessionjson = $this->serializeGenerator->serializeFormation($FormationListe);
-        return new Response($sessionjson, Response::HTTP_OK);
-    }
-
-
-    
-
-    /**
-     * Retourne la liste de tous les sessions
-     *
-     * @Route("/getallsessions/directeur", name="directeur_all_sessions")
-     */
-    public function getAllSessionsForDirecteurProfil()
-    {
-        
-        $sessionListe = $this->entityManager->getRepository(Session::class)->findAll();
-        $sessionjson = $this->serializeGenerator->serializeSessionDirection($sessionListe);
-        // dump($sessionListe);
-        return new Response($sessionjson, Response::HTTP_OK);
-    }
-
-     /**
-     * Retourne la liste de tous les sessions
-     *
-     * @Route("/getsessions", name="all_sessions")
-     */
-    public function getAllSessions()
-    {
-       
-        $sessionListe = $this->entityManager->getRepository(Session::class)->findAll();
-        $sessionjson = $this->serializeGenerator->serializeSession($sessionListe);
-        // dump($sessionListe);
-        return new Response($sessionjson, Response::HTTP_OK);
-    }
-
-     /**
-     * Retourne la liste de tous les emails enregistrés dans la base de données
-     *
-     * @Route("/getemails", name="all_emails")
-     */
-    public function getAllEmails()
-    {
-        $usersListe = $this->entityManager->getRepository(User::class)->findAll();
-        // dump($usersListe);
-        $usersJson = $this->serializeGenerator->serializeMail($usersListe);
-        // dump($sessionListe);
-        return new Response($usersJson, Response::HTTP_OK);
-
-    }
-
-
-    /**
-     * Données json de la liste de tous les enseignants.
-     *
-     * @Route("/superadmin/data/enseignants", name="password_liste")
-     */
-    public function index()
-    {
-        $All_users = array(); // Ca sera le tableau d'objet encodé en json contenant toute les infos de la requete
-        // On veut afficher tous les professeur dans la liste du gestionnaire donc on utilise findAll()
-        $professeurs = $this->entityManager->getRepository(Professeur::class)->findAll();
-        foreach ($professeurs as $value) {
-            $prof_user = $value->getUser();
-            $All_users[]=$prof_user;
-
-            }
-        ///// RECUPERATION DES DONNEES sous forme de tableau d'objets
-        $jsonUser = $this->serializeGenerator->serializeUserProfesseur($All_users);
-        return new Response($jsonUser, Response::HTTP_OK);
-    }
-    
-
-    public function mailer($name, \Swift_Mailer $mailer)
-    {
-        $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('send@example.com')
-            ->setTo('recipient@example.com')
-            ->setBody(
-                $this->renderView(
-                    // templates/emails/registration.html.twig
-                    'emails/registration.html.twig',
-                    ['name' => $name]
-                ),
-                'text/html'
-            )
-
-            // you can remove the following code if you don't define a text version for your emails
-            ->addPart(
-                $this->renderView(
-                    // templates/emails/registration.txt.twig
-                    'emails/registration.txt.twig',
-                    ['name' => $name]
-                ),
-                'text/plain'
-            )
-        ;
-        $mailer->send($message);
-    // return $this->render(...);
-    }
-
-
-    /**
-     * Envoi du mail de confirmation
-     *
-     * @return Response_for_email_sent
-     * @Route("/sendEmailConfirm/", name="email_confirm")
-     */
-    public function envoiEmailConfirmation(Request $request, \Swift_Mailer $mailer)
-    {
-        $content = json_decode($request->getContent(), true);
-        if ($content['firstName']  && isset($content['email'] )){
-
-            $name = $content['firstName'];
-            // CREATION IMAGE PDF64
-            $path = 'https://packref.seopowa.com/img/logo.jpg';
-            $type = pathinfo($path, PATHINFO_EXTENSION);
-            $data = file_get_contents($path);
-            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-
-            // Configure Dompdf according to your needs
-            $pdfOptions = new Options();
-            $pdfOptions->set('defaultFont', 'Arial');
-            // Instantiate Dompdf with our options
-            $dompdf = new Dompdf($pdfOptions);
-            // Retrieve the HTML generated in our twig file
-            $html = $this->renderView('emails/pdf.html.twig',['name' => $name, 'imageconvertie'  =>$base64]);
-            // Load HTML to Dompdf
-            $dompdf->loadHtml($html);
-            // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
-            $dompdf->setPaper('A4', 'portrait');
-            // Render the HTML as PDF
-            $dompdf->render();
-            // Store PDF Binary Data
-            $output = $dompdf->output();
-
-            // EMAIL DE CONFIRMATION :::
-        
-            $message = (new \Swift_Message('Hello Email'))
-            ->setSubject('My subject')
-            ->setFrom('figurinaka@gmail.com')
-            ->setTo($content['email'])
-            ->setBody(
-                $this->renderView(
-                    // templates/emails/registration.html.twig
-                    'emails/registration.html.twig',
-                    ['name' => $name,'imageconvertie' => $base64]
-                ),
-                'text/html'
-            );
-    
-            // Create the attachment with your data
-            $attachment = new \Swift_Attachment($output, 'mon-fichier-joint.pdf', 'application/pdf');
-            // Attach it to the message
-            $message->attach($attachment);
-
-            $mailer->send($message);
-
-            $response = new Response(
-                'ok',
-                Response::HTTP_OK,
-                ['content-type' => 'application/json']
-            );
-            return $response;
-        }
-
-        return new Response('Error', Response::HTTP_INTERNAL_SERVER_ERROR);
-    }
-        
-
-
-
-
-
-    /**
      * Ajout d'un nouveau professeur à la liste
      *
      * @return Response
      * @Route("/superadmin/data/enseignants/new", name="password_new")
      */
-    public function newProfesseur(Request $request, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer)
+    public function addNewProfesseur(Request $request, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer)
     {
         
         $content = json_decode($request->getContent(), true);
@@ -392,7 +196,6 @@ class GestionProfesseurController extends AbstractController
         return new Response('Error', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
-
      /**
      * Supprime un mot de passe.
      *
@@ -420,55 +223,6 @@ class GestionProfesseurController extends AbstractController
             ['content-type' => 'application/json']
         );
         return $response;
-    }
-
-    
-    /**
-     * Génére un mot de passe aleatoire.
-     *
-     * @return Response
-     * @Route("/motdepasse/generate", name="password_generate")
-     */
-    public function generatePassword()
-    {
-        // $chaine = 'abcdefghjkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ023456789+@!$%?&';
-        $mot_de_passe = '';
-        $majuscule= 'ABCDEFGHJKLMNOPQRSTUVWXYZ';
-        $chaine = 'abcdefghjkmnopqrstuvwxyz';
-        $special = '+!$%?-@#%^&*';
-        $number = '023456789';
-
-        $longeur_chaine = \strlen($chaine);
-        $nb_caractere = 5;
-        for ($i = 1; $i <= $nb_caractere; ++$i) {
-            $place_aleatoire = random_int(0, ($longeur_chaine - 1));
-            $mot_de_passe .= $chaine[$place_aleatoire];
-        }
-
-        $longeur_chaine = \strlen($majuscule);
-        $nb_caractere = 1;
-        for ($i = 1; $i <= $nb_caractere; ++$i) {
-            $place_aleatoire = random_int(0, ($longeur_chaine - 1));
-            $mot_de_passe .= $majuscule[$place_aleatoire];
-        }
-
-        $longeur_chaine = \strlen($special);
-        $nb_caractere = 1;
-        for ($i = 1; $i <= $nb_caractere; ++$i) {
-            $place_aleatoire = random_int(0, ($longeur_chaine - 1));
-            $mot_de_passe .= $special[$place_aleatoire];
-        }
-
-        $longeur_chaine = \strlen($number);
-        $nb_caractere = 2;
-        for ($i = 1; $i <= $nb_caractere; ++$i) {
-            $place_aleatoire = random_int(0, ($longeur_chaine - 1));
-            $mot_de_passe .= $number[$place_aleatoire];
-        }
-
-        $jsonContent = $this->serializeGenerator->serializeObject($mot_de_passe);
-        return new Response($jsonContent, Response::HTTP_OK);
-        // return new Response($mot_de_passe, Response::HTTP_OK);
     }
 
 }

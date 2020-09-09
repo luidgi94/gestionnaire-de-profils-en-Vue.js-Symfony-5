@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  lun. 13 juil. 2020 à 14:49
+-- Généré le :  mer. 09 sep. 2020 à 13:10
 -- Version du serveur :  10.4.10-MariaDB
--- Version de PHP :  7.3.12
+-- Version de PHP :  7.1.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `account_parameters` (
   `codepostal` int(11) DEFAULT NULL,
   `genre` enum('homme','femme') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `account_parameters`
@@ -79,7 +79,8 @@ INSERT INTO `account_parameters` (`id`, `first_name`, `last_name`, `avatar_file_
 (38, 'Vincent', 'Luz', 'vincent.png', '2003-08-21', 721489325, 'Fleurs-Mazert', '30 avenue Lucie Centre', 95231, 'homme'),
 (39, 'Kevin', 'Tran', 'kevin.png', '2003-07-14', 752142365, 'Yvelin-Choisy', '12 allée des conifères', 85260, 'homme'),
 (40, 'Paul', 'Keys', 'paul.png', '1978-05-10', 758241556, 'Oeil-sur-onde', '2 boulevard des puits', 85222, 'homme'),
-(41, 'Baptiste', 'Cantali', 'baptiste.png', '1978-05-10', 758241556, 'Cherbourg-Sous-Orgne', '52 rue du muguet', 85222, 'homme');
+(41, 'Baptiste', 'Cantali', 'baptiste.png', '1978-05-10', 758241556, 'Cherbourg-Sous-Orgne', '52 rue du muguet', 85222, 'homme'),
+(102, 'Luidgi', 'Clairboy', 'profhomme.png', '2020-09-09', NULL, NULL, NULL, NULL, 'homme');
 
 -- --------------------------------------------------------
 
@@ -212,12 +213,16 @@ INSERT INTO `formation_professeur` (`formation_id`, `professeur_id`) VALUES
 (7, 7),
 (8, 25),
 (9, 8),
+(9, 26),
 (11, 32),
 (12, 26),
 (13, 28),
+(13, 96),
 (14, 31),
+(14, 96),
 (15, 29),
 (16, 33),
+(16, 96),
 (19, 12),
 (20, 27),
 (21, 30),
@@ -244,7 +249,7 @@ CREATE TABLE IF NOT EXISTS `message` (
   PRIMARY KEY (`id`),
   KEY `IDX_B6BD307F19FB9489` (`user_mail_sent_id`),
   KEY `IDX_B6BD307F71EBDAF5` (`user_mail_received_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `message`
@@ -256,7 +261,11 @@ INSERT INTO `message` (`id`, `user_mail_received_id`, `user_mail_sent_id`, `obje
 (25, 9, 28, 'Cours sur les fonctions', 'Bonjour,\r\n\r\nJ\'ai oublié de noter les exercices à faire pour lundi..\r\n\r\nPouvez-vous me les écrire s\'il vous plait?\r\n\r\nMerci.\r\n', '2020-06-26 16:00:00', NULL, 1),
 (26, 28, 9, 'Re: Cours sur les fonctions', 'Bonjour Florence,\r\n\r\nSi vous avez regardé le PDF \"études de fonctions\", les exercices à faire sont écrits à la fin de ce PDF..\r\n\r\nNe vous précipitez pas trop vite.\r\nTout est à votre disposition sur la plateforme...\r\n\r\nCordialement.', '2020-06-26 16:32:00', NULL, 0),
 (27, 9, 14, 'Entrevue avec les collègues', 'Bonjour FX,\r\n\r\nSuite à l\'incident en classe de l\'autre fois, \r\nune entrevue s\'est organisé entre tous les professeurs de Première ES, le directeur et l’assistante de direction..\r\n\r\nJe pense que tu sera en formation, du coup, tu pourrais faire un compte-rendu sur word sur ton point de vue et je transmettrai.\r\n\r\nCordialement,\r\nGeorge.', '2020-06-25 07:00:00', NULL, 1),
-(28, 14, 9, 'RE: Entrevue avec les collègues', 'D\'accord, je te passerai tous ça pour Lundi. Bonne journée !', '2020-06-26 06:44:00', NULL, 0);
+(28, 14, 9, 'RE: Entrevue avec les collègues', 'D\'accord, je te passerai tous ça pour Lundi. Bonne journée !', '2020-06-26 06:44:00', NULL, 0),
+(30, 37, 9, 'genial !!!', 'okc \'est pas mal', '2020-08-27 16:42:31', NULL, 1),
+(42, 9, 37, 'oui', 'd\'accord francois', '2020-08-27 23:32:14', NULL, 1),
+(48, 37, 9, 'd\'accord ', 'a +', '2020-08-27 23:56:17', NULL, 1),
+(52, 37, 9, 'jonna', 'hello jhonna', '2020-08-28 11:43:46', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -297,7 +306,7 @@ CREATE TABLE IF NOT EXISTS `module` (
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_C2426285200282E` (`formation_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `module`
@@ -343,7 +352,8 @@ INSERT INTO `module` (`id`, `formation_id`, `title`, `created`, `modified`) VALU
 (43, 21, 'Préparation post BAC', '2020-05-24 00:00:00', NULL),
 (44, 13, 'La phrase', '2020-05-24 00:00:00', NULL),
 (45, 23, 'Représentation visuelle', '2020-05-24 00:00:00', NULL),
-(46, 22, 'Géographie', '2020-05-24 00:00:00', NULL);
+(46, 22, 'Géographie', '2020-05-24 00:00:00', NULL),
+(48, 5, 'trading', '2020-08-07 13:32:20', NULL);
 
 -- --------------------------------------------------------
 
@@ -359,7 +369,7 @@ CREATE TABLE IF NOT EXISTS `professeur` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_17A55299A76ED395` (`user_id`),
   KEY `user_key` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `professeur`
@@ -372,7 +382,7 @@ INSERT INTO `professeur` (`id`, `user_id`, `matter`) VALUES
 (12, 14, 'SES (Première ES)'),
 (24, 29, 'Histoire/Géographie (Terminale S)'),
 (25, 30, 'Histoire/Géographie (Première ES)'),
-(26, 31, 'Allemand (Terminale S)'),
+(26, 31, 'Francais (Première ES)'),
 (27, 32, 'Éducation Sportive (Terminale S)'),
 (28, 33, 'Anglais (Première ES)'),
 (29, 34, 'Espagnol (Terminale S)'),
@@ -380,7 +390,8 @@ INSERT INTO `professeur` (`id`, `user_id`, `matter`) VALUES
 (31, 36, 'Allemand (Première ES)'),
 (32, 37, 'Anglais (Terminale S)'),
 (33, 38, 'Espagnol (Première ES)'),
-(35, 61, 'Philosophie (Terminale S)');
+(35, 61, 'Philosophie (Terminale S)'),
+(96, 123, 'Anglais (Première ES), Espagnol (Première ES), Allemand (Première ES)');
 
 -- --------------------------------------------------------
 
@@ -410,7 +421,7 @@ INSERT INTO `professeur_formation` (`professeur_id`, `formation_id`) VALUES
 (12, 19),
 (24, 22),
 (25, 8),
-(26, 12),
+(26, 9),
 (27, 20),
 (28, 13),
 (29, 15),
@@ -418,7 +429,10 @@ INSERT INTO `professeur_formation` (`professeur_id`, `formation_id`) VALUES
 (31, 14),
 (32, 11),
 (33, 16),
-(35, 24);
+(35, 24),
+(96, 13),
+(96, 14),
+(96, 16);
 
 -- --------------------------------------------------------
 
@@ -448,7 +462,7 @@ INSERT INTO `professeur_session` (`professeur_id`, `session_id`) VALUES
 (12, 1),
 (24, 1),
 (25, 2),
-(26, 1),
+(26, 2),
 (27, 1),
 (28, 2),
 (29, 1),
@@ -456,7 +470,8 @@ INSERT INTO `professeur_session` (`professeur_id`, `session_id`) VALUES
 (31, 2),
 (32, 1),
 (33, 2),
-(35, 1);
+(35, 1),
+(96, 2);
 
 -- --------------------------------------------------------
 
@@ -571,10 +586,12 @@ INSERT INTO `session_professeur` (`session_id`, `professeur_id`) VALUES
 (2, 8),
 (2, 9),
 (2, 25),
+(2, 26),
 (2, 28),
 (2, 30),
 (2, 31),
-(2, 33);
+(2, 33),
+(2, 96);
 
 -- --------------------------------------------------------
 
@@ -598,17 +615,17 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `UNIQ_8D93D6497C56DBD6` (`parameter_id`),
   UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`),
   UNIQUE KEY `UNIQ_8D93D649BAB22EE9` (`professeur_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `user`
 --
 
 INSERT INTO `user` (`id`, `professeur_id`, `parameter_id`, `email`, `username`, `roles`, `password`, `note`, `created_at`, `updated_at`) VALUES
-(1, NULL, 41, 'cantali.lycee@codesk.com', 'cantali78', 'a:1:{i:0;s:16:\"ROLE_SUPER_ADMIN\";}', '$argon2id$v=19$m=65536,t=4,p=1$NVljdmNmRW5UbDZ1Ny5VRA$IgtuH5j+1Ar3OoxbKKECuc5HTSuKGtUUwTlYhdOYJp0', NULL, '2020-05-20 19:22:26', NULL),
+(1, NULL, 41, 'directeur.lycee@codesk.com', 'cantali78', 'a:1:{i:0;s:16:\"ROLE_SUPER_ADMIN\";}', '$argon2id$v=19$m=65536,t=4,p=1$NVljdmNmRW5UbDZ1Ny5VRA$IgtuH5j+1Ar3OoxbKKECuc5HTSuKGtUUwTlYhdOYJp0', NULL, '2020-05-20 19:22:26', NULL),
 (3, NULL, 3, 'hugo.lycee@codesk.com', 'hugo7', 'a:1:{i:0;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$NVljdmNmRW5UbDZ1Ny5VRA$IgtuH5j+1Ar3OoxbKKECuc5HTSuKGtUUwTlYhdOYJp0', 'eleve', '2020-05-31 22:12:32', NULL),
 (4, NULL, 4, 'tulipe.peo@codesk.com', 'tulipe8', 'a:1:{i:0;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$NVljdmNmRW5UbDZ1Ny5VRA$IgtuH5j+1Ar3OoxbKKECuc5HTSuKGtUUwTlYhdOYJp0', 'eleve', '2020-05-31 22:12:32', NULL),
-(9, 7, 9, 'xavier.lycee@codesk.com', 'francois489', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$NVA4UFM4Wm10bncwWkpNbw$p2gmx43846XTn4UX9/iHtzEG/TpEH3oa/HjIwjl3xo4', NULL, '2020-05-24 17:43:02', '2020-06-25 08:57:57'),
+(9, 7, 9, 'xavier.lycee@codesk.com', 'francois489', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$Tm1oNEQ1MTh4cEozQ28xdA$qV5ON9hPCPa7BQGLREbNmdvy459Ib8mJLhD+WaoJmow', NULL, '2020-05-24 17:43:02', '2020-07-27 23:26:39'),
 (10, 8, 10, 'lafeuille.lycee@codesk.com', 'jeanmi74', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$a3p1S0xvNUlrblVNVDRHdQ$eBP83EXD1OyYIEhTP8KXkm+fDz1KOef5R0SkvjGV0YE', 'professeur', '2020-05-26 15:08:59', NULL),
 (11, 9, 11, 'smith.lycee@codesk.com', 'smithkelly7', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$Z3dVRnpySTh5VzlzaGc0Wg$0rGH3ey+ILeuUiD2tA1WTPS2H3gX58RTmKZWGkA7BRU', 'professeur', '2020-05-26 15:25:07', '2020-06-03 21:19:30'),
 (14, 12, 14, 'louvain.lycee@codesk.com', 'louvainG', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$RXZRemlUYXA3L2x1eWhnSw$OUcYsEVCMbpFrRqbohW406yFlfQdEsvInaQTaoOVS/8', 'professeur', '2020-05-31 22:12:32', '2020-06-04 12:00:11'),
@@ -628,7 +645,7 @@ INSERT INTO `user` (`id`, `professeur_id`, `parameter_id`, `email`, `username`, 
 (28, NULL, 37, 'florence.lycee@codesk.com', 'flo74', 'a:1:{i:0;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$U2JnazZBUThlOUliSWFrdg$FV8eugUecQW8tsNHkbl4ZaOzVpPbead/BfPNFGr8jP0', 'eleve', '2020-05-31 22:12:32', NULL),
 (29, 24, 21, 'moss.lycee@codesk.com', 'phillmoss8', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$U2JnazZBUThlOUliSWFrdg$FV8eugUecQW8tsNHkbl4ZaOzVpPbead/BfPNFGr8jP0', 'professeur', '2020-05-31 22:12:32', NULL),
 (30, 25, 28, 'joubile.lycee@codesk.com', 'mhenry56', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$U2JnazZBUThlOUliSWFrdg$FV8eugUecQW8tsNHkbl4ZaOzVpPbead/BfPNFGr8jP0', 'professeur', '2020-05-24 17:43:02', NULL),
-(31, 26, 32, 'descartes.lycee@codesk.com', 'reneP5', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$U2JnazZBUThlOUliSWFrdg$FV8eugUecQW8tsNHkbl4ZaOzVpPbead/BfPNFGr8jP0', 'professeur', '2020-05-24 17:43:02', NULL),
+(31, 26, 32, 'descartes.lycee@codesk.com', 'reneP5', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$V0o2Ry5CQzJVbHNBUDhDUA$C6XHQR1Bxcnas716BR8k80s1wUUKoiY1VQ++puFH9s4', NULL, '2020-05-24 17:43:02', '2020-08-07 13:43:28'),
 (32, 27, 33, 'jauget.lycee@codesk.com', 'yves52', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$U2JnazZBUThlOUliSWFrdg$FV8eugUecQW8tsNHkbl4ZaOzVpPbead/BfPNFGr8jP0', 'professeur', '2020-05-24 17:43:02', NULL),
 (33, 28, 22, 'pierreb.lycee@codesk.com', 'berth52', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$U2JnazZBUThlOUliSWFrdg$FV8eugUecQW8tsNHkbl4ZaOzVpPbead/BfPNFGr8jP0', 'professeur', '2020-05-24 17:43:02', NULL),
 (34, 29, 23, 'cruzm.lycee@codesk.com', 'maryline2', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$U2JnazZBUThlOUliSWFrdg$FV8eugUecQW8tsNHkbl4ZaOzVpPbead/BfPNFGr8jP0', 'professeur', '2020-05-19 22:12:32', NULL),
@@ -636,7 +653,8 @@ INSERT INTO `user` (`id`, `professeur_id`, `parameter_id`, `email`, `username`, 
 (36, 31, 25, 'dupresmj.lycee@codesk.com', 'mariejeanne01', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$U2JnazZBUThlOUliSWFrdg$FV8eugUecQW8tsNHkbl4ZaOzVpPbead/BfPNFGr8jP0', 'professeur', '2020-05-31 22:12:32', NULL),
 (37, 32, 27, 'keevesg.lycee@codesk.com', 'geraldine06', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$U2JnazZBUThlOUliSWFrdg$FV8eugUecQW8tsNHkbl4ZaOzVpPbead/BfPNFGr8jP0', 'professeur', '2020-05-31 22:12:32', NULL),
 (38, 33, 30, 'laurenceternan.lycee@codesk.com', 'laurence07', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$U2JnazZBUThlOUliSWFrdg$FV8eugUecQW8tsNHkbl4ZaOzVpPbead/BfPNFGr8jP0', 'professeur', '2020-05-31 22:12:32', NULL),
-(61, 35, 40, 'keys.lycee@codesk.com', 'paulkeys7', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$U2JnazZBUThlOUliSWFrdg$FV8eugUecQW8tsNHkbl4ZaOzVpPbead/BfPNFGr8jP0', 'professeur', '2020-05-20 19:22:26', NULL);
+(61, 35, 40, 'keys.lycee@codesk.com', 'paulkeys7', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$U2JnazZBUThlOUliSWFrdg$FV8eugUecQW8tsNHkbl4ZaOzVpPbead/BfPNFGr8jP0', 'professeur', '2020-05-20 19:22:26', NULL),
+(123, 96, 102, 'luidgi-clairboy@live.fr', 'PhilouLulu', 'a:2:{i:0;s:10:\"ROLE_ADMIN\";i:1;s:9:\"ROLE_USER\";}', '$argon2id$v=19$m=65536,t=4,p=1$amRYOHBFVkp0dVBLZHhCcQ$UMo5X+ooLfzxVnVuwmyXmGF+fzHNaXk/ySE8FwFQJQM', NULL, '2020-09-08 13:52:35', NULL);
 
 --
 -- Contraintes pour les tables déchargées
