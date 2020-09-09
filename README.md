@@ -17,9 +17,10 @@ Dans le repertoire du projet faites :
 Cela va démarrer l'application en mode developpement.<br />
 Ouvrez ensuite [http://127.0.0.1:8000/](http://127.0.0.1:8000/)pour voir l'application dans le navigateur.
 
-configure email in file .env
-# For Gmail as a transport, use: "gmail://username:password@localhost"
-don't forget to configure your gmail account to use swift mailer
+n'oubliez pas de configurer votre compte gmail pour utiliser swift mailer:
+configuration  email dans le fichier .env
+# For Gmail as a transport for Swift mailer, use: "gmail://username:password@localhost"
+
 
 Si vous rencontrer un problème avec la dernière version de doctrine faites:
 ### `composer recipes:install --force -v`
