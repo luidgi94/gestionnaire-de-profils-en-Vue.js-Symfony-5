@@ -10,6 +10,9 @@ Pour installer les dépendances avec npm:
 ### `npm install`
 ### `npm run build`
 
+importez la base de donnée "codesk_db.sql" dans mysql
+contenue dans le repertoire ./Doc de connexion et DB
+
 Dans le repertoire du projet faites :
 
 ### `symfony server:start`
